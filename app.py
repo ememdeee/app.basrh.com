@@ -22,9 +22,6 @@ def id_grabber():
             csv_file_input = request.files["csv"]
             # output, newFileName = idGrabber.main_function(links, csv_file_input, useOptionSelected)
             respond = idGrabber.main_function(links, csv_file_input, useOptionSelected)
-            respond["download_link"] = str({url_for('idGrabber_download', filename=respond["download_link"])}) #make download link
-            # run python function from other file
-            # return f"<p id='links' class='output links'>Link: {links}</p><p id='csv' class='output csv'>CSV: {csv_file_input.filename}</p><p id='option' class='output option'>Option: {useOptionSelected}</p><p id='outputValue' class='output outputValue'>Output: {output}</p><p id='download' class='output download'>Download: <a href='{url_for('idGrabber_download', filename=newFileName)}'>{newFileName}</a></p>"
             return jsonify(respond)
         except KeyError:
             return jsonify({"status": "Bad request. Some field is missing."})
