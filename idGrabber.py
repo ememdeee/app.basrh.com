@@ -33,7 +33,16 @@ def main_function(links, csv_file_input, useOptionSelected):
             return "Url not valid"
 
     results = []
+    fileName = ""
     newFileName = ""
+    respond = {
+        "links": "",
+        "csv_filename": "",
+        "use_option": "",
+        "output": "",
+        "download_link": "",
+        "status": ""
+    }
 
     if (useOptionSelected == "url"):
         # execute using links
@@ -55,8 +64,10 @@ def main_function(links, csv_file_input, useOptionSelected):
             reader = csv.DictReader(file)
             if 'url' in reader.fieldnames:
                 urls = [row['url'] for row in reader]
+                links = urls
             else:
-                return "URL column not found.", ""
+                respond["status"] = "URL column not found."
+                return respond
         with open(result_directory, 'w', newline='') as output_file:
             # Create a CSV writer
             csv_writer = csv.writer(output_file)
@@ -70,4 +81,12 @@ def main_function(links, csv_file_input, useOptionSelected):
                 csv_writer.writerow([url, result])
         # make ready download file - not yet
 
-    return results, newFileName
+    respond = {
+        "links": links,
+        "csv_filename": fileName,
+        "use_option": useOptionSelected,
+        "output": results,
+        "download_link": newFileName,
+        "status": "200"
+    }
+    return respond
