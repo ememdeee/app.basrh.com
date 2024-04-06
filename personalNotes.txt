@@ -1,0 +1,2 @@
+*Ignore modifiation and rush pull*
+git reset --hard HEAD
