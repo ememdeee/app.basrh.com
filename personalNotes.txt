@@ -1,2 +1,4 @@
-*Ignore modifiation and rush pull*
-git reset --hard HEAD
+Instalation that needed:
+
+pip install flask-cors
+#to enable API call from cross domain

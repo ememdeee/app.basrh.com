@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, url_for, send_from_directory, jsonify
+from flask_cors import CORS
 import idGrabber
 
 app = Flask(__name__)
+CORS(app, origins=["https://www.basrh.com"])
 
 # declare home page
 @app.route("/")
