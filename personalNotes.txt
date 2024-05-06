@@ -1,4 +1,7 @@
 Instalation that needed:
 
-pip install flask-cors
-#to enable API call from cross domain
+for id grabber:
+pip install flask-cors #to enable API call from cross domain
+
+Reuploade
+pip install instagrapi #reuplaoder
