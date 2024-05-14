@@ -8,7 +8,22 @@ def login_function():
     cl = Client()
     cl.login(ACCOUNT_USERNAME, ACCOUNT_PASSWORD)
 
-    # user_id = cl.user_id_from_username(ACCOUNT_USERNAME)
-    # medias = cl.user_medias(user_id, 20)
+    userName = "successmindset.sch"
+    
     print ("Logged in!")
-    return cl
+    return cl, userName
+
+#login
+def login_function2():
+    from instagrapi import Client
+    from urllib.parse import unquote #for album reupload
+    ACCOUNT_USERNAME="imagine.autos"
+    ACCOUNT_PASSWORD="muhammadmmd218"
+
+    cl = Client()
+    cl.login(ACCOUNT_USERNAME, ACCOUNT_PASSWORD)
+    
+    userName = "imagine.autos"
+
+    print ("Logged in-2!")
+    return cl, userName

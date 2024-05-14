@@ -1,4 +1,4 @@
-def reupload_function(cl, url, story):
+def reupload_function(cl, userName, url, story):
   # import moviepy.editor as mp  # Import moviepy
   # Fucntions
   def photo_reuploader(media,story,caption):
@@ -45,6 +45,13 @@ def reupload_function(cl, url, story):
       except Exception:
           pass
       print("Story uploaded (Video)")
+    elif story=="both":
+        cl.clip_upload(path, caption)
+        try:
+            cl.video_upload_to_story(path)
+        except Exception:
+            pass
+        print("Reel uploaded to feed and story!")
 
   def album_reuploader(media,caption):
     # Get urls
@@ -62,35 +69,33 @@ def reupload_function(cl, url, story):
     cl.album_upload(pathlist, caption)
     print("Album uploaded")
 
-  def caption_formater (media):
-    caption = media['caption_text']
+  def caption_formater (media, userName):
+    caption = media['caption_text']  
     if "@" in caption:
-      # Split the string into words
-      words = caption.split()
-
-      # Filter words that contain "#"
-      hashtag_words = [word for word in words if "#" in word]
-
-      # Print the filtered words
-      caption = "Follow: @successmindset.sch \n.\n.\n.\n.\n.\n.\n#successmindset " + " ".join(hashtag_words)
-      print ("The caption contain '@'. Using template caption!")
-
+      print("Caption Contain @!!, change it with our account")
+      lines = caption.splitlines()
+      new_lines = []
+      for line in lines:
+        new_line = ' '.join(word if "@" not in word else "@"+ userName for word in line.split())
+        new_lines.append(new_line)
+      caption = '\n'.join(new_lines)
     else:
-      print("The caption does not contain '@'.")
+        print("The caption does not contain '@'.")
     
     return caption
   # end of function
 
-  
+
 
   #ask for input 
   # url = input("Enter the URL: ")
   # story_input = input("Is it a story? (Type 'y' for Yes or 'n' for No): ").lower()
-  
   if story == 'y':
     story = True
   elif story == 'n':
     story = False
+  elif story == 'b':
+     story = "both"
   else:
     print("Invalid input. It's a story")
     story = True
@@ -108,7 +113,7 @@ def reupload_function(cl, url, story):
   media=cl.media_info(id).dict()
 
   #Caption formater
-  caption=caption_formater (media)
+  caption=caption_formater(media, userName)
 
   if media['media_type'] == 1:
       print("It's Photo")
