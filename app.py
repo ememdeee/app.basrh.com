@@ -55,8 +55,12 @@ def reuploader():
     else:
         url = request.args.get('url')
         story = request.args.get('story')
+        acc = request.args.get('story')
         if url:
-            reupload.reupload_function(cl, userName, url, story)
+            if acc == "acc1":
+                reupload.reupload_function(cl, userName, url, story)
+            elif acc == "acc2":
+                reupload.reupload_function(cl2, userName, url, story)
             # reupload.reupload_function(cl2, url, story)
             print("Application Stop Succesfuly.")
             return f"Content Uploaded"
