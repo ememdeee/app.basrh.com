@@ -18,6 +18,9 @@ schedulerStory2 = BackgroundScheduler()
 feedStoryList = URLS
 feedStoryList2 = URLS2
 cl= None
+cl2= None
+userName="default"
+userName2="default2"
 
 # declare home page
 @app.route("/")
@@ -55,24 +58,30 @@ def reuploader():
     else:
         url = request.args.get('url')
         story = request.args.get('story')
-        acc = request.args.get('story')
+        acc = request.args.get('acc')
         if url:
-            if acc == "acc1":
+            if acc == "1":
                 reupload.reupload_function(cl, userName, url, story)
-            elif acc == "acc2":
-                reupload.reupload_function(cl2, userName, url, story)
-            # reupload.reupload_function(cl2, url, story)
+            elif acc == "2":
+                reupload.reupload_function(cl2, userName2, url, story)
+            else:
+                print ("acc query string not available or not valid, upload using default acc.")
+                reupload.reupload_function(cl, userName, url, story)
             print("Application Stop Succesfuly.")
             return f"Content Uploaded"
         else:
             return render_template("igReuploader.html")
 
+def showCurrentTime():
+    print(f"Time: {datetime.now().strftime('%m')}-{datetime.now().strftime('%d')}-{datetime.now().strftime('%Y')} | {datetime.now().strftime('%H:%M:%S')}")
+
 # reupload scheduler script
 def feedStory():
     if feedStoryList:
         url = feedStoryList.pop(0)
-        print("Feed Story, uploading: ", url) #print this to record last uplaoded
-        reupload.reupload_function(cl, userName, url, "b")
+        showCurrentTime()
+        print("For Account: ", userName, "Feed Story, uploading: ", url) #print this to record last uplaoded
+        # reupload.reupload_function(cl, userName, url, "b")
         print(url, "Uploaded!")
     else:
         print("~~~All FeedStory have been uploaded. Stopping FeedStory scheduler.~~~")
@@ -83,11 +92,12 @@ def feedStory():
             pass
             
 def story():
-    for _ in range(5):
+    for i in range(5):
         if feedStoryList:
             url = feedStoryList.pop(0)
-            print("Story, uploading: ", url) #print this to record last uplaoded
-            reupload.reupload_function(cl, userName, url, "y")
+            showCurrentTime()
+            print(i+1, "For Account: ", userName, "Story, uploading: ", url) #print this to record last uplaoded
+            # reupload.reupload_function(cl, userName, url, "y")
             print(url, "Uploaded!")
         else:
             print("~~~All STORIES have been uploaded. Stopping Story scheduler.~~~")
@@ -100,8 +110,9 @@ def story():
 def feedStory2():
     if feedStoryList2:
         url = feedStoryList2.pop(0)
-        print("Feed Story, uploading: ", url) #print this to record last uplaoded
-        reupload.reupload_function(cl2, userName2, url, "b")
+        showCurrentTime()
+        print("For Account: ", userName2, "Feed Story, uploading: ", url) #print this to record last uplaoded
+        # reupload.reupload_function(cl2, userName2, url, "b")
         print(url, "Uploaded!")
     else:
         print("~~~All FeedStory have been uploaded. Stopping FeedStory scheduler.~~~")
@@ -112,11 +123,12 @@ def feedStory2():
             pass
 
 def story2():
-    for _ in range(6):
+    for i in range(6):
         if feedStoryList2:
             url = feedStoryList2.pop(0)
-            print("Story, uploading: ", url) #print this to record last uplaoded
-            reupload.reupload_function(cl2, userName2, url, "y")
+            showCurrentTime()
+            print(i+1, "For Account: ", userName2, "Story, uploading: ", url) #print this to record last uplaoded
+            # reupload.reupload_function(cl2, userName2, url, "y")
             print(url, "Uploaded!")
         else:
             print("~~~All STORIES have been uploaded. Stopping Story scheduler.~~~")
@@ -128,13 +140,13 @@ def story2():
 
 
 # Schedule the task to run every 10 seconds
-schedulerFeedStory.add_job(feedStory, 'interval', hours=3) #upload to feed and story
+schedulerFeedStory.add_job(feedStory, 'interval', seconds=10) #upload to feed and story
 schedulerFeedStory.start()
-schedulerStory.add_job(story, 'interval', hours=24) #upload to story
+schedulerStory.add_job(story, 'interval', seconds=16) #upload to story
 schedulerStory.start()
-schedulerFeedStory2.add_job(feedStory2, 'interval', hours=6) #upload to feed and story
+schedulerFeedStory2.add_job(feedStory2, 'interval', seconds=13) #upload to feed and story
 schedulerFeedStory2.start()
-schedulerStory2.add_job(story2, 'interval', hours=24) #upload to story
+schedulerStory2.add_job(story2, 'interval', seconds=25) #upload to story
 schedulerStory2.start()
 
 # Register a function to shut down the scheduler when the Flask app exits
@@ -144,12 +156,8 @@ atexit.register(lambda: schedulerFeedStory2.shutdown())
 atexit.register(lambda: schedulerStory2.shutdown())
 
 if __name__ == "__main__":
-    cl, userName=igLogin.login_function()
-    cl2, userName2=igLogin.login_function2()
-    feedStory()
-    story()
-    feedStory2()
-    story2()
+    # cl, userName=igLogin.login_function()
+    # cl2, userName2=igLogin.login_function2()
     app.run(debug=False)
 
 application = app
