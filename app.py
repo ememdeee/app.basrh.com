@@ -140,7 +140,7 @@ def story2():
 
 
 # Schedule the task to run every 10 seconds
-schedulerFeedStory.add_job(feedStory, 'interval', seconds=10) #upload to feed and story
+schedulerFeedStory.add_job(feedStory, 'interval', hours=3) #upload to feed and story
 schedulerFeedStory.start()
 schedulerStory.add_job(story, 'interval', hours=24) #upload to story
 schedulerStory.start()
