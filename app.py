@@ -11,10 +11,11 @@ from urls import URLS, URLS2
 app = Flask(__name__)
 # CORS(app, origins=["https://www.basrh.com"]) 
 CORS(app)  # Allow Reqeust From All Source, good for testing
-schedulerFeedStory = BackgroundScheduler()
-schedulerStory = BackgroundScheduler()
-schedulerFeedStory2 = BackgroundScheduler()
-schedulerStory2 = BackgroundScheduler()
+scheduler = BackgroundScheduler()
+# schedulerFeedStory = BackgroundScheduler()
+# schedulerStory = BackgroundScheduler()
+# schedulerFeedStory2 = BackgroundScheduler()
+# schedulerStory2 = BackgroundScheduler()
 feedStoryList = URLS
 feedStoryList2 = URLS2
 cl= None
@@ -60,11 +61,12 @@ def reuploader():
         story = request.args.get('story')
         acc = request.args.get('acc')
         if url:
+            print("Uploade Manualy Started, url:", url)
             if acc == "1":
-                print("up acc1")
+                print("uploading for motiv...")
                 reupload.reupload_function(cl, userName, url, story)
             elif acc == "2":
-                print("up acc2")
+                print("uploading for car...")
                 reupload.reupload_function(cl2, userName2, url, story)
             else:
                 print ("acc query string not available or not valid, upload using default acc.")
@@ -77,22 +79,29 @@ def reuploader():
 def showCurrentTime():
     print(f"Time: {datetime.now().strftime('%m')}-{datetime.now().strftime('%d')}-{datetime.now().strftime('%Y')} | {datetime.now().strftime('%H:%M:%S')}")
 
+def print_next_run_time(job_id):
+    job = scheduler.get_job(job_id)
+    if job:
+        next_run = job.next_run_time.strftime('%Y-%m-%d %H:%M:%S')
+        print(f"Next run of {job_id} is scheduled at {next_run}")
+
 # reupload scheduler script
 def feedStory():
     print("Run every 3h")
     if feedStoryList:
         url = feedStoryList.pop(0)
         showCurrentTime()
-        print("For Account: ", userName, "Feed Story, uploading: ", url) #print this to record last uplaoded
+        print("For Account: ", userName, "Feed Story, uploading:", url) #print this to record last uplaoded
         reupload.reupload_function(cl, userName, url, "b")
         print(url, "Uploaded!")
+        print_next_run_time("feedStory")
     else:
         print("~~~All FeedStory have been uploaded. Stopping FeedStory scheduler.~~~")
-        try:
-            schedulerFeedStory.shutdown()
-        except Exception:
-            print ("Shutdown FeedStory Scheduler")
-            pass
+        # try:
+        #     schedulerFeedStory.shutdown()
+        # except Exception:
+        #     print ("Shutdown FeedStory Scheduler")
+        #     pass
             
 def story():
     print("Run every 24h")
@@ -100,73 +109,86 @@ def story():
         if feedStoryList:
             url = feedStoryList.pop(0)
             showCurrentTime()
-            print(i+1, "For Account: ", userName, "Story, uploading: ", url) #print this to record last uplaoded
+            print(i+1, "For Account: ", userName, "Story, uploading:", url) #print this to record last uplaoded
             reupload.reupload_function(cl, userName, url, "y")
             print(url, "Uploaded!")
         else:
             print("~~~All STORIES have been uploaded. Stopping Story scheduler.~~~")
-            try:
-                schedulerStory.shutdown()
-            except Exception:
-                print ("Shutdown Story Scheduler")
-                pass
+            # try:
+            #     schedulerStory.shutdown()
+            # except Exception:
+            #     print ("Shutdown Story Scheduler")
+            #     pass
+    print_next_run_time("story")
 # reupload scheduler script 2
 def feedStory2():
     print("Run every 6H")
     if feedStoryList2:
         url = feedStoryList2.pop(0)
         showCurrentTime()
-        print("For Account: ", userName2, "Feed Story, uploading: ", url) #print this to record last uplaoded
+        print("For Account: ", userName2, "Feed Story, uploading:", url) #print this to record last uplaoded
         reupload.reupload_function(cl2, userName2, url, "b")
         print(url, "Uploaded!")
+        print_next_run_time("feedStory2")
     else:
         print("~~~All FeedStory have been uploaded. Stopping FeedStory scheduler.~~~")
-        try:
-            schedulerFeedStory2.shutdown()
-        except Exception:
-            print ("Shutdown FeedStory Scheduler")
-            pass
+        # try:
+        #     schedulerFeedStory2.shutdown()
+        # except Exception:
+        #     print ("Shutdown FeedStory Scheduler")
+        #     pass
 
 def story2():
     print("Run every 24h")
-    for i in range(6):
+    for i in range(5):
         if feedStoryList2:
             url = feedStoryList2.pop(0)
             showCurrentTime()
-            print(i+1, "For Account: ", userName2, "Story, uploading: ", url) #print this to record last uplaoded
+            print(i+1, "For Account: ", userName2, "Story, uploading:", url) #print this to record last uplaoded
             reupload.reupload_function(cl2, userName2, url, "y")
             print(url, "Uploaded!")
         else:
             print("~~~All STORIES have been uploaded. Stopping Story scheduler.~~~")
-            try:
-                schedulerStory2.shutdown()
-            except Exception:
-                print ("Shutdown Story Scheduler")
-                pass
+            # try:
+            #     schedulerStory2.shutdown()
+            # except Exception:
+            #     print ("Shutdown Story Scheduler")
+            #     pass
+    print_next_run_time("story2")
 
 
 # Schedule the task to run every 10 seconds
-schedulerFeedStory.add_job(feedStory, 'interval', hours=3) #upload to feed and story
-schedulerFeedStory.start()
-schedulerStory.add_job(story, 'interval', hours=24) #upload to story
-schedulerStory.start()
-schedulerFeedStory2.add_job(feedStory2, 'interval', hours=6) #upload to feed and story
-schedulerFeedStory2.start()
-schedulerStory2.add_job(story2, 'interval', hours=24) #upload to story
-schedulerStory2.start()
+# schedulerFeedStory.add_job(feedStory, 'interval', hours=3) #upload to feed and story
+# schedulerFeedStory.start()
+# schedulerStory.add_job(story, 'interval', hours=24) #upload to story
+# schedulerStory.start()
+# schedulerFeedStory2.add_job(feedStory2, 'interval', hours=6) #upload to feed and story
+# schedulerFeedStory2.start()
+# schedulerStory2.add_job(story2, 'interval', hours=24) #upload to story
+# schedulerStory2.start()
+scheduler.add_job(feedStory, 'interval', minutes=1, id='feedStory')
+scheduler.add_job(story, 'interval', minutes=2, id='story')
+scheduler.add_job(feedStory2, 'interval', minutes=1, id='feedStory2')
+scheduler.add_job(story2, 'interval', minutes=2, id='story2')
+scheduler.start()
 
 # Register a function to shut down the scheduler when the Flask app exits
-atexit.register(lambda: schedulerFeedStory.shutdown())
-atexit.register(lambda: schedulerStory.shutdown())
-atexit.register(lambda: schedulerFeedStory2.shutdown())
-atexit.register(lambda: schedulerStory2.shutdown())
+# atexit.register(lambda: schedulerFeedStory.shutdown())
+# atexit.register(lambda: schedulerStory.shutdown())
+# atexit.register(lambda: schedulerFeedStory2.shutdown())
+# atexit.register(lambda: schedulerStory2.shutdown())
+atexit.register(lambda: scheduler.shutdown())
+
+for job in scheduler.get_jobs():
+    next_run = job.next_run_time.strftime('%Y-%m-%d %H:%M:%S')
+    print(f"Job {job.id} scheduled to run at {next_run}")
 
 if __name__ == "__main__":
     print("Start login")
+    # userName = "user1"
+    # userName2 = "user2"
     cl, userName=igLogin.login_function()
     cl2, userName2=igLogin.login_function2()
-    story()
-    story2()
 
     app.run(debug=False)
 
