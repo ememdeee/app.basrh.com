@@ -4,16 +4,53 @@
 {% endblock %}
 {% block content %}
     <!-- html goes here -->
-    <h1>Tidak ada query string!</h1> 
-    <ul>
-        <li>url=LINK</li>
-        <li>story=(y/n)</li>
-        <li>acc=(1 -> motivasi/ 2 -> mobil)</li>
-    </ul>
-    <h2>What todo:</h2>
-    <ul>
-        <li>ready to on 24/7 to upload 10 story and 3 photo each day. (try for 1-2 day first. 30 link needed)</li>
-        <li>scrap 300 rell</li>
-        <li>let it upload every day.</li>
-    </ul>
+    <div class="container mt-4">
+        {% if manual %}
+        <div class="alert alert-success" role="alert">
+            <h1 class="display-4">Successfully uploaded!</h1>
+            <p class="lead">For account {{ manual }}</p>
+        </div>
+        {% else %}
+        <div class="alert alert-danger" role="alert">
+            <h1 class="display-4">Tidak ada query string!</h1>
+        </div>
+        {% endif %}
+    
+        <ul class="list-group mb-4">
+            <li class="list-group-item">url=LINK</li>
+            <li class="list-group-item">story=(y/n)</li>
+            <li class="list-group-item">acc=(1 -> motivasi/ 2 -> mobil)</li>
+        </ul>
+    
+        <h2 class="my-4">Scheduler:</h2>
+        {% if jobs %}
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Job Name</th>
+                        <th scope="col">Scheduled Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for job, time in jobs.items() %}
+                    <tr>
+                        <td>{{ job }}</td>
+                        <td>{{ time }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-center">No data to display</p>
+        {% endif %}
+
+        <h2 class="my-4">What to do:</h2>
+        <ul class="list-group">
+            <li class="list-group-item">Ready to on 24/7 to upload 10 stories and 3 photos each day. (try for 1-2 days first. 30 links needed) - <strong class="text-success font-weight-bold">DONE</strong></li>
+            <li class="list-group-item">Scrap 300 reels - <strong class="text-success font-weight-bold">DONE</strong></li>
+            <li class="list-group-item">Let it upload every day - <strong class="text-success font-weight-bold">DONE</strong></li>
+        </ul>
+    </div>
 {% endblock %}
