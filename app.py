@@ -122,7 +122,7 @@ def story():
     print_next_run_time("story")
 # reupload scheduler script 2
 def feedStory2():
-    print("Run every 6H")
+    print("Run every 5H")
     if feedStoryList2:
         url = feedStoryList2.pop(0)
         showCurrentTime()
@@ -168,7 +168,7 @@ def story2():
 # schedulerStory2.start()
 scheduler.add_job(feedStory, 'interval', hours=3, id='feedStory')
 scheduler.add_job(story, 'interval', hours=24, id='story')
-scheduler.add_job(feedStory2, 'interval', hours=6, id='feedStory2')
+scheduler.add_job(feedStory2, 'interval', hours=5, id='feedStory2')
 scheduler.add_job(story2, 'interval', hours=23, id='story2')
 scheduler.start()
 
