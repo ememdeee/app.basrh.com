@@ -65,14 +65,14 @@ def reuploader():
             print("Uploade Manualy Started, url:", url)
             if acc == "1":
                 print("uploading for motiv...")
-                # reupload.reupload_function(cl, userName, url, story)
+                reupload.reupload_function(cl, userName, url, story)
             elif acc == "2":
                 print("uploading for car...")
-                # reupload.reupload_function(cl2, userName2, url, story)
+                reupload.reupload_function(cl2, userName2, url, story)
             else:
                 print ("acc query string not available or not valid, upload using default acc.")
                 acc=1
-                # reupload.reupload_function(cl, userName, url, story)
+                reupload.reupload_function(cl, userName, url, story)
             print("Application Stop Succesfuly.")
             return render_template("igReuploader.html", jobs=job_schedule, manual=acc)
         else:
@@ -96,7 +96,7 @@ def feedStory():
         url = feedStoryList.pop(0)
         showCurrentTime()
         print("For Account: ", userName, "Feed Story, uploading:", url) #print this to record last uplaoded
-        # reupload.reupload_function(cl, userName, url, "b")
+        reupload.reupload_function(cl, userName, url, "b")
         print(url, "Uploaded!")
         print_next_run_time("feedStory")
     else:
@@ -114,7 +114,7 @@ def story():
             url = feedStoryList.pop(0)
             showCurrentTime()
             print(i+1, "For Account: ", userName, "Story, uploading:", url) #print this to record last uplaoded
-            # reupload.reupload_function(cl, userName, url, "y")
+            reupload.reupload_function(cl, userName, url, "y")
             print(url, "Uploaded!")
         else:
             print("~~~All STORIES have been uploaded. Stopping Story scheduler.~~~")
@@ -131,7 +131,7 @@ def feedStory2():
         url = feedStoryList2.pop(0)
         showCurrentTime()
         print("For Account: ", userName2, "Feed Story, uploading:", url) #print this to record last uplaoded
-        # reupload.reupload_function(cl2, userName2, url, "b")
+        reupload.reupload_function(cl2, userName2, url, "b")
         print(url, "Uploaded!")
         print_next_run_time("feedStory2")
     else:
@@ -149,7 +149,7 @@ def story2():
             url = feedStoryList2.pop(0)
             showCurrentTime()
             print(i+1, "For Account: ", userName2, "Story, uploading:", url) #print this to record last uplaoded
-            # reupload.reupload_function(cl2, userName2, url, "y")
+            reupload.reupload_function(cl2, userName2, url, "y")
             print(url, "Uploaded!")
         else:
             print("~~~All STORIES have been uploaded. Stopping Story scheduler.~~~")
@@ -161,7 +161,7 @@ def story2():
     print_next_run_time("story2")
 
 
-scheduler.add_job(feedStory, 'interval', seconds=10, id='feedStory')
+scheduler.add_job(feedStory, 'interval', hours=3, id='feedStory')
 scheduler.add_job(story, 'interval', hours=24, id='story')
 scheduler.add_job(feedStory2, 'interval', hours=5, id='feedStory2')
 scheduler.add_job(story2, 'interval', hours=23, id='story2')
@@ -184,8 +184,8 @@ if __name__ == "__main__":
     print("Start login")
     # userName = "user1"
     # userName2 = "user2"
-    # cl, userName=igLogin.login_function()
-    # cl2, userName2=igLogin.login_function2()
+    cl, userName=igLogin.login_function()
+    cl2, userName2=igLogin.login_function2()
 
     app.run(debug=False)
 
