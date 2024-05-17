@@ -7,7 +7,7 @@
     <div class="container mt-4">
         {% if manual %}
         <div class="alert alert-success" role="alert">
-            <h1 class="display-4">Successfully uploaded!</h1>
+            <h1 class="display-4">{{ status }}</h1>
             <p class="lead">For account {{ manual }}</p>
         </div>
         {% else %}
@@ -18,7 +18,7 @@
     
         <ul class="list-group mb-4">
             <li class="list-group-item">url=LINK</li>
-            <li class="list-group-item">story=(y/n)</li>
+            <li class="list-group-item">story=(y -> story/ n -> feed/ b -> both)</li>
             <li class="list-group-item">acc=(1 -> motivasi/ 2 -> mobil)</li>
         </ul>
     

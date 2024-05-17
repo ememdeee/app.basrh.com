@@ -12,10 +12,6 @@ app = Flask(__name__)
 # CORS(app, origins=["https://www.basrh.com"]) 
 CORS(app)  # Allow Reqeust From All Source, good for testing
 scheduler = BackgroundScheduler()
-# schedulerFeedStory = BackgroundScheduler()
-# schedulerStory = BackgroundScheduler()
-# schedulerFeedStory2 = BackgroundScheduler()
-# schedulerStory2 = BackgroundScheduler()
 feedStoryList = URLS
 feedStoryList2 = URLS2
 cl= None
@@ -65,16 +61,17 @@ def reuploader():
             print("Uploade Manualy Started, url:", url)
             if acc == "1":
                 print("uploading for motiv...")
-                reupload.reupload_function(cl, userName, url, story)
+                response = reupload.reupload_function(cl, userName, url, story)
             elif acc == "2":
                 print("uploading for car...")
-                reupload.reupload_function(cl2, userName2, url, story)
+                response = reupload.reupload_function(cl2, userName2, url, story)
             else:
                 print ("acc query string not available or not valid, upload using default acc.")
                 acc=1
-                reupload.reupload_function(cl, userName, url, story)
+                response = reupload.reupload_function(cl, userName, url, story)
             print("Application Stop Succesfuly.")
-            return render_template("igReuploader.html", jobs=job_schedule, manual=acc)
+            print (response)
+            return render_template("igReuploader.html", jobs=job_schedule, manual=acc, status=response)
         else:
             return render_template("igReuploader.html", jobs=job_schedule, manual=False)
 
@@ -97,7 +94,7 @@ def feedStory():
         showCurrentTime()
         print("For Account: ", userName, "Feed Story, uploading:", url) #print this to record last uplaoded
         reupload.reupload_function(cl, userName, url, "b")
-        print(url, "Uploaded!")
+        print(url, "Done!")
         print_next_run_time("feedStory")
     else:
         print("~~~All FeedStory have been uploaded. Stopping FeedStory scheduler.~~~")
@@ -115,7 +112,7 @@ def story():
             showCurrentTime()
             print(i+1, "For Account: ", userName, "Story, uploading:", url) #print this to record last uplaoded
             reupload.reupload_function(cl, userName, url, "y")
-            print(url, "Uploaded!")
+            print(url, "Done!")
         else:
             print("~~~All STORIES have been uploaded. Stopping Story scheduler.~~~")
             # try:
@@ -132,7 +129,7 @@ def feedStory2():
         showCurrentTime()
         print("For Account: ", userName2, "Feed Story, uploading:", url) #print this to record last uplaoded
         reupload.reupload_function(cl2, userName2, url, "b")
-        print(url, "Uploaded!")
+        print(url, "Done!")
         print_next_run_time("feedStory2")
     else:
         print("~~~All FeedStory have been uploaded. Stopping FeedStory scheduler.~~~")
@@ -150,7 +147,7 @@ def story2():
             showCurrentTime()
             print(i+1, "For Account: ", userName2, "Story, uploading:", url) #print this to record last uplaoded
             reupload.reupload_function(cl2, userName2, url, "y")
-            print(url, "Uploaded!")
+            print(url, "Done!")
         else:
             print("~~~All STORIES have been uploaded. Stopping Story scheduler.~~~")
             # try:
@@ -182,9 +179,9 @@ print(job_schedule)
 
 if __name__ == "__main__":
     print("Start login")
-    # userName = "user1"
-    # userName2 = "user2"
-    cl, userName=igLogin.login_function()
+    story()
+    story2()
+    # cl, userName=igLogin.login_function()
     cl2, userName2=igLogin.login_function2()
 
     app.run(debug=False)

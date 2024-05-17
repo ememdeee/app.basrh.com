@@ -1,4 +1,6 @@
 def reupload_function(cl, userName, url, story):
+  import time
+  import requests
   # import moviepy.editor as mp  # Import moviepy
   # Fucntions
   def photo_reuploader(media,story,caption):
@@ -28,12 +30,14 @@ def reupload_function(cl, userName, url, story):
     video_url = media['video_url']
 
     #download video
-    path= cl.video_download_by_url(str(video_url), 'tmp')
+    path = download_with_retries(video_url, 'tmp')
+    # path = None
+    # path= cl.video_download_by_url(str(video_url), 'tmp')
+
     print ("PATHHHH", path)
 
     #get image caption ['caption_text']
     #caption = media['caption_text']
-
     if story==False:
       #upload video (Reel)
       cl.clip_upload(path, caption)
@@ -85,7 +89,23 @@ def reupload_function(cl, userName, url, story):
     return caption
   # end of function
 
-
+  def download_with_retries(url, path, retries=3, delay=30):
+    attempt = 0
+    while attempt < retries:
+        try:
+            path = cl.video_download_by_url(str(url), path)
+            print(f"Download succeeded on attempt {attempt + 1}")
+            return path
+        except requests.exceptions.Timeout:
+            attempt += 1
+            print(f"Attempt {attempt} failed due to timeout. Retrying in {delay} seconds...")
+            time.sleep(delay)
+        except requests.exceptions.RequestException as e:
+            attempt += 1
+            print(f"Attempt {attempt} failed with error: {e}. Retrying in {delay} seconds...")
+            time.sleep(delay)
+    print("All retry attempts failed.")
+    return None
 
   #ask for input 
   # url = input("Enter the URL: ")
@@ -105,7 +125,6 @@ def reupload_function(cl, userName, url, story):
   #   break 
   
   # check media type
-
   #get id by url
   id = cl.media_pk_from_url(url)
 
@@ -126,7 +145,12 @@ def reupload_function(cl, userName, url, story):
       reel_reuploader(media,story,caption) # Run IGTV reuploader
   elif media['media_type'] == 2 and media['product_type'] == "clips":
       print("It's Reel")
-      reel_reuploader(media,story,caption) # Run Reel reuploader
+      try:
+        reel_reuploader(media,story,caption) # Run Reel reuploader
+        return "Successfully uploaded!"
+      except Exception:
+        print("Something went wrong in the publication for url:" , url)
+        return "Something went wrong!"
   elif media['media_type'] == 8:
       print("It's Album")
       album_reuploader(media,caption) # Run album reuploader
