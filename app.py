@@ -179,10 +179,10 @@ print(job_schedule)
 
 if __name__ == "__main__":
     print("Start login")
-    story()
-    story2()
     cl, userName=igLogin.login_function()
     cl2, userName2=igLogin.login_function2()
+    story()
+    story2()
 
     app.run(debug=False)
 
