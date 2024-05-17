@@ -181,7 +181,7 @@ if __name__ == "__main__":
     print("Start login")
     story()
     story2()
-    # cl, userName=igLogin.login_function()
+    cl, userName=igLogin.login_function()
     cl2, userName2=igLogin.login_function2()
 
     app.run(debug=False)
