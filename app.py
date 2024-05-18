@@ -164,11 +164,6 @@ scheduler.add_job(feedStory2, 'interval', hours=5, id='feedStory2')
 scheduler.add_job(story2, 'interval', hours=23, id='story2')
 scheduler.start()
 
-# Register a function to shut down the scheduler when the Flask app exits
-# atexit.register(lambda: schedulerFeedStory.shutdown())
-# atexit.register(lambda: schedulerStory.shutdown())
-# atexit.register(lambda: schedulerFeedStory2.shutdown())
-# atexit.register(lambda: schedulerStory2.shutdown())
 atexit.register(lambda: scheduler.shutdown())
 
 for job in scheduler.get_jobs():
