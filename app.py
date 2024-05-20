@@ -158,10 +158,10 @@ def story2():
     print_next_run_time("story2")
 
 
-scheduler.add_job(feedStory, 'interval', hours=3, id='feedStory')
-scheduler.add_job(story, 'interval', hours=24, id='story')
-scheduler.add_job(feedStory2, 'interval', hours=5, id='feedStory2')
-scheduler.add_job(story2, 'interval', hours=23, id='story2')
+scheduler.add_job(feedStory, 'interval', hours=3, minutes=10, id='feedStory')
+scheduler.add_job(story, 'interval', hours=24, minutes=15, id='story')
+scheduler.add_job(feedStory2, 'interval', hours=5, minutes=20, id='feedStory2')
+scheduler.add_job(story2, 'interval', hours=23, minutes=25, id='story2')
 scheduler.start()
 
 atexit.register(lambda: scheduler.shutdown())
