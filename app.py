@@ -71,7 +71,7 @@ def reuploader():
                 response = reupload.reupload_function(cl, userName, url, story)
             print("Application Stop Succesfuly.")
             print (response)
-            return render_template("igReuploader.html", jobs=job_schedule, manual=acc, status=response)
+            return render_template("igReuploader.html", jobs=job_schedule, manual=acc, status=response, content=url)
         else:
             return render_template("igReuploader.html", jobs=job_schedule, manual=False)
 
@@ -176,8 +176,6 @@ if __name__ == "__main__":
     print("Start login")
     cl, userName=igLogin.login_function()
     cl2, userName2=igLogin.login_function2()
-    story()
-    story2()
 
     app.run(debug=False)
 
