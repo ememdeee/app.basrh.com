@@ -176,6 +176,8 @@ if __name__ == "__main__":
     print("Start login")
     cl, userName=igLogin.login_function()
     cl2, userName2=igLogin.login_function2()
+    feedStory();
+    feedStory2();
 
     app.run(debug=False)
 
