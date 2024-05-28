@@ -71,7 +71,8 @@ def reuploader():
                 response = reupload.reupload_function(cl, userName, url, story)
             print("Application Stop Succesfuly.")
             print (response)
-            return render_template("igReuploader.html", jobs=job_schedule, manual=acc, status=response, content=url)
+            # return render_template("igReuploader.html", jobs=job_schedule, manual=acc, status=response, content=url)
+            return "Uploaded!"
         else:
             return render_template("igReuploader.html", jobs=job_schedule, manual=False)
 
@@ -158,7 +159,7 @@ def story2():
     print_next_run_time("story2")
 
 
-scheduler.add_job(feedStory, 'interval', hours=3, minutes=10, id='feedStory')
+scheduler.add_job(feedStory, 'interval', hours=4, minutes=10, id='feedStory')
 scheduler.add_job(story, 'interval', hours=24, minutes=15, id='story')
 scheduler.add_job(feedStory2, 'interval', hours=5, minutes=20, id='feedStory2')
 scheduler.add_job(story2, 'interval', hours=23, minutes=25, id='story2')
@@ -176,8 +177,6 @@ if __name__ == "__main__":
     print("Start login")
     cl, userName=igLogin.login_function()
     cl2, userName2=igLogin.login_function2()
-    feedStory();
-    feedStory2();
 
     app.run(debug=False)
 

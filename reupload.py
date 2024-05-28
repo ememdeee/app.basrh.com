@@ -40,7 +40,10 @@ def reupload_function(cl, userName, url, story):
     #caption = media['caption_text']
     if story==False:
       #upload video (Reel)
-      cl.clip_upload(path, caption)
+      try:
+        cl.clip_upload(path, caption)
+      except Exception:
+        pass
       print("Reel uploaded")
     elif story == True:
       #upload video (Story)
@@ -50,7 +53,10 @@ def reupload_function(cl, userName, url, story):
           pass
       print("Story uploaded (Video)")
     elif story=="both":
-        cl.clip_upload(path, caption)
+        try:
+          cl.clip_upload(path, caption)
+        except Exception:
+          pass
         try:
             cl.video_upload_to_story(path)
         except Exception:
@@ -145,12 +151,12 @@ def reupload_function(cl, userName, url, story):
       reel_reuploader(media,story,caption) # Run IGTV reuploader
   elif media['media_type'] == 2 and media['product_type'] == "clips":
       print("It's Reel")
-      try:
-        reel_reuploader(media,story,caption) # Run Reel reuploader
-        return "Successfully uploaded!"
-      except Exception:
-        print("Something went wrong in the publication for url:" , url)
-        return "Something went wrong!"
+      # try:
+      reel_reuploader(media,story,caption) # Run Reel reuploader
+      return "Successfully uploaded!"
+      # except Exception:
+      #   print("Something went wrong in the publication for url:" , url)
+      #   return "Something went wrong!"
   elif media['media_type'] == 8:
       print("It's Album")
       album_reuploader(media,caption) # Run album reuploader
