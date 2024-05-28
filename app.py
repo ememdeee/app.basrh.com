@@ -71,8 +71,8 @@ def reuploader():
                 response = reupload.reupload_function(cl, userName, url, story)
             print("Application Stop Succesfuly.")
             print (response)
-            # return render_template("igReuploader.html", jobs=job_schedule, manual=acc, status=response, content=url)
-            return "Uploaded!"
+            return render_template("igReuploader.html", jobs=job_schedule, manual=acc, status=response, content=url)
+            # return "Uploaded!"
         else:
             return render_template("igReuploader.html", jobs=job_schedule, manual=False)
 
