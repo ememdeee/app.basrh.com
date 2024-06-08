@@ -5,6 +5,7 @@ def main_function(links, csv_file_input, useOptionSelected):
     import os
     from datetime import datetime
     from werkzeug.utils import secure_filename
+    import validators
 
     def scrapUrl(url):
         response = requests.get(url)
@@ -48,8 +49,11 @@ def main_function(links, csv_file_input, useOptionSelected):
         # execute using links
         urls = links.split()
         for url in urls:
-            result = scrapUrl(url)
-            results.append(result)
+            if validators.url(url):
+                result = scrapUrl(url)
+                results.append(result)
+            else:
+                results.append("not valid")
     elif (useOptionSelected == "csv"):
         # execute using csv
         fileName = secure_filename(csv_file_input.filename)
