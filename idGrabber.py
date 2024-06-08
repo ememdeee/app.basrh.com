@@ -33,6 +33,7 @@ def main_function(links, csv_file_input, useOptionSelected):
         else:
             return "Url not valid"
 
+    linkSubmitted = []
     results = []
     fileName = ""
     newFileName = ""
@@ -50,9 +51,11 @@ def main_function(links, csv_file_input, useOptionSelected):
         urls = links.split()
         for url in urls:
             if validators.url(url):
+                linkSubmitted.append(url)
                 result = scrapUrl(url)
                 results.append(result)
             else:
+                linkSubmitted.append(url)
                 results.append("not valid")
     elif (useOptionSelected == "csv"):
         # execute using csv
@@ -86,7 +89,7 @@ def main_function(links, csv_file_input, useOptionSelected):
         # make ready download file - not yet
 
     respond = {
-        "links": links,
+        "links": linkSubmitted,
         "csv_filename": fileName,
         "use_option": useOptionSelected,
         "output": results,

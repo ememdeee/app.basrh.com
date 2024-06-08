@@ -2,6 +2,7 @@ Instalation that needed:
 
 for id grabber:
 pip install flask-cors #to enable API call from cross domain
+pip install beautifulsoup4
 
 Reuploader
 pip install instagrapi #reuplaoder
