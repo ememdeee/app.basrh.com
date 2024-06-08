@@ -175,9 +175,9 @@ print(job_schedule)
 
 if __name__ == "__main__":
     print("Start login")
-    # cl, userName=igLogin.login_function()
+    cl, userName=igLogin.login_function()
     # cl.inject_sessionid_to_public()
-    # cl2, userName2=igLogin.login_function2()
+    cl2, userName2=igLogin.login_function2()
     # cl2.inject_sessionid_to_public()
 
     app.run(debug=False)
