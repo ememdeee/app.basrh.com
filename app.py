@@ -159,19 +159,19 @@ def story2():
     print_next_run_time("story2")
 
 
-scheduler.add_job(feedStory, 'interval', hours=4, minutes=10, id='feedStory')
-scheduler.add_job(story, 'interval', hours=24, minutes=15, id='story')
-scheduler.add_job(feedStory2, 'interval', hours=5, minutes=20, id='feedStory2')
-scheduler.add_job(story2, 'interval', hours=23, minutes=25, id='story2')
-scheduler.start()
+# scheduler.add_job(feedStory, 'interval', hours=4, minutes=10, id='feedStory')
+# scheduler.add_job(story, 'interval', hours=24, minutes=15, id='story')
+# scheduler.add_job(feedStory2, 'interval', hours=5, minutes=20, id='feedStory2')
+# scheduler.add_job(story2, 'interval', hours=23, minutes=25, id='story2')
+# scheduler.start()
 
-atexit.register(lambda: scheduler.shutdown())
+# atexit.register(lambda: scheduler.shutdown())
 
-for job in scheduler.get_jobs():
-    next_run = job.next_run_time.strftime('%Y-%m-%d %H:%M:%S')
-    job_schedule[job.id] = next_run
-    print(f"Job {job.id} scheduled to run at {next_run}")
-print(job_schedule)
+# for job in scheduler.get_jobs():
+#     next_run = job.next_run_time.strftime('%Y-%m-%d %H:%M:%S')
+#     job_schedule[job.id] = next_run
+#     print(f"Job {job.id} scheduled to run at {next_run}")
+# print(job_schedule)
 
 if __name__ == "__main__":
     print("Start login")
